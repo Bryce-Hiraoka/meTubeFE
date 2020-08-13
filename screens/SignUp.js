@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 
-
 export default class Signin extends React.Component{
     constructor(props){
         super(props);
@@ -41,7 +40,9 @@ export default class Signin extends React.Component{
     };
     render(){
         return(
-            <Text>Submit</Text>
-        );
+            <View>
+
+            </View>
+    );
     }
 }
