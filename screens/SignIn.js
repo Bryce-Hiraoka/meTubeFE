@@ -1,47 +1,83 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
-
+import {Avatar} from 'react-native-paper';
+import styles from '../Constants/SignInStyle';
 
 export default class Signin extends React.Component{
-    constructor(props){
+    constructor (props){
         super(props);
         this.state = {
-            emailFocus:false,
-            passwordFocus:false,
-            emailstr:'',
-            passwordstr:''
+            numberFocus: false,
+            passwordFocus: false,
+            numberStr: '',
+            passwordStr: ''
         }
     }
 
-    handleSubmit=()=>{
+    handleSubmit = () =>{
         console.log(this.state);
         this.props.navigation.navigate("loggedIn");
-
     };
 
-    handleEmailFocus = ()=>{
-        this.setState({emailFocus:true})
-    };
-    handleEmailBlur = ()=>{
-        this.setState({emailFocus:false})
-    };
-    handleEmailChange = (event)=>{
-        this.setState({emailstr:event.nativeEvent.text});
+    handleSignUp = () =>{
+        this.props.navigation.navigate("SignUp")
     };
 
-    handlePasswordFocus = ()=>{
-        this.setState({passwordFocus:true})
+    handleNumberFocus = () =>{
+        this.setState({numberFocus: true});
     };
-    handlePasswordBlur = ()=>{
-        this.setState({passwordFocus:false})
+
+    handleNumberBlur = () =>{
+        this.setState({numberFocus: false});
     };
-    handlePasswordChange = (event)=>{
-        this.setState({passwordstr:event.nativeEvent.text});
+
+    handlePasswordFocus = () =>{
+        this.setState({passwordFocus: true});
     };
+
+    handlePasswordBlur = () =>{
+        this.setState({passwordFocus: false});
+    };
+
     render(){
         return(
-            <Text>Submit</Text>
-        );
+            <View style={styles.container}>
+                <Avatar.Image style={styles.logo}
+                              size={200}
+                              source={require('../assets/PVlogo.jpeg')}
+                />
+                <View style={styles.box}>
+                    <TextInput
+                        style={this.state.numberFocus?styles.textInputHoverNum:styles.textInputNum}
+                        onFocus={this.handleNumberFocus}
+                        onBlur={this.handleNumberBlur}
+                        placeholderTextColor='black'
+                        placeholder="Number"
+                    />
+                    <TextInput
+                        style={this.state.passwordFocus?styles.textInputHoverPass:styles.textInputPass}
+                        onFocus={this.handlePasswordFocus}
+                        onBlur={this.handlePasswordBlur}
+                        placeholderTextColor='black'
+                        placeholder="Password"
+                    />
+                    <TouchableOpacity
+                        onPress={this.handleSubmit}
+                        style={styles.button}
+                    >
+                        <Text
+                        style={styles.buttonText}>
+                            Login
+                        </Text>
+                    </TouchableOpacity>
+                    <View style={styles.signUp}>
+                        <Text> Don't have an account?</Text>
+                        <TouchableOpacity onPress={this.handleSignUp}>
+                            <Text style={styles.button2Text}> SignUp </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        )
     }
 }
