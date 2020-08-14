@@ -1,47 +1,89 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
+
 
 export default class Signin extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            emailFocus:false,
+            numberFocus:false,
             passwordFocus:false,
-            emailstr:'',
-            passwordstr:''
+            numberStr:'',
+            passwordStr:''
         }
     }
 
     handleSubmit=()=>{
-        console.log(this.state);
-        this.props.navigation.navigate("loggedIn");
+        try{
+            if(this.state.passwordStr==this.state.confirmPasswordStr){
+                console.log(this.state);
+                fetch('https://lab5redo8-4-20.herokuapp.com/userSignup', {method: 'POST', headers:
+                        {Accept:'application/json', 'Content-Type': 'application/json'},
+                    body:JSON.stringify({number:this.state.numberStr,password:this.state.passwordStr})})
+                        .then((response)=> response.json())
+                        .then((responseJson)=> {
+                            console.log(responseJson);
+                        })
+                    .catch((error)=> {console.error(error);});
+
+            }else{
+                return Alert.alert('asdfadasdfasdfasdf',
+                    'Your account creation failed'),
+                    [
+                        {text:'Return to Signin', onPress: () => {navigation.navigate({routeName:'notLoggedIn'})}}
+                    ]
+            }
+        }catch(err){
+            return Alert.alert('Signup error',
+                'Your account creation failed'),
+                [
+                    {text:'Return to Signin', onPress: () => {navigation.navigate({routeName:'notLoggedIn'})}}
+                ]
+
+
+        }
+            this.props.navigation.navigate("loggedIn");
 
     };
 
-    handleEmailFocus = ()=>{
-        this.setState({emailFocus:true})
-    };
-    handleEmailBlur = ()=>{
-        this.setState({emailFocus:false})
-    };
-    handleEmailChange = (event)=>{
-        this.setState({emailstr:event.nativeEvent.text});
+    handleNumberChange = (event)=>{
+        this.setState({numberStr:event.nativeEvent.text});
     };
 
-    handlePasswordFocus = ()=>{
-        this.setState({passwordFocus:true})
-    };
-    handlePasswordBlur = ()=>{
-        this.setState({passwordFocus:false})
-    };
     handlePasswordChange = (event)=>{
-        this.setState({passwordstr:event.nativeEvent.text});
+        this.setState({passwordStr:event.nativeEvent.text});
     };
+
+    handleConfirmPasswordChange = (event)=>{
+        this.setState({confirmPasswordStr:event.nativeEvent.text});
+    };
+
     render(){
         return(
-            <View>
+            <View /*style={}*/>
+                <View /*style={}*/>
 
+                    <TextInput /*style={}*/
+                           onChange={this.handleNumberChange}
+                           placeholder={"number"}
+                    />
+                    <TextInput /*style={}*/
+                           onChange={this.handlePasswordChange}
+                           placeholder={"password"}
+                    />
+                    <TextInput /*style={}*/
+                        onChange={this.handleConfirmPasswordChange}
+                        placeholder={"confirm password"}
+                    />
+                    <TouchableOpacity
+                        /*style={}*/
+                        onPress={this.handleSubmit}>
+                        <Text
+                            /*style={}*/
+                        >Submit</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
     );
     }
