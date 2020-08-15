@@ -13,18 +13,19 @@ import SignUp from "../screens/SignUp";
 
 export const notLoggedIn = createStackNavigator(
     {
-        SignIn:{
-            screen:SignIn,
-            navigationOptions: {
-                headerTitle: 'Signin',
-            }
-        },
         SignUp:{
             screen:SignUp,
             navigationOptions: {
                 headerTitle: 'SignUp',
             }
+        },
+        SignIn:{
+            screen:SignIn,
+            navigationOptions: {
+                headerTitle: 'Signin',
+            }
         }
+
     }
 );
 
