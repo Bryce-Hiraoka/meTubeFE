@@ -10,17 +10,41 @@ export default class SignUp extends React.Component{
         this.state = {
             numberFocus:false,
             passwordFocus:false,
+
             confirmPassFocus:false,
+
             numberStr:'',
             passwordStr:''
         }
     }
 
     handleSubmit=()=>{
-        console.log(this.state);
-        this.props.navigation.navigate("loggedIn");
+        try{
+            if(this.state.passwordStr==this.state.confirmPasswordStr){
+                console.log(this.state);
+                fetch('https://lab5redo8-4-20.herokuapp.com/userSignup', {method: 'POST', headers:
+                        {Accept:'application/json', 'Content-Type': 'application/json'},
+                    body:JSON.stringify({number:this.state.numberStr,password:this.state.passwordStr})})
+                        .then((response)=> response.json())
+                        .then((responseJson)=> {
+                            console.log(responseJson);
+                        })
+                    .catch((error)=> {console.error(error);});
 
-    };
+            }else{
+                return Alert.alert('asdfadasdfasdfasdf',
+                    'Your account creation failed'),
+                    [
+                        {text:'Return to Signin', onPress: () => {navigation.navigate({routeName:'notLoggedIn'})}}
+                    ]
+            }
+        }catch(err){
+            return Alert.alert('Signup error',
+                'Your account creation failed'),
+                [
+                    {text:'Return to Signin', onPress: () => {navigation.navigate({routeName:'notLoggedIn'})}}
+                ]
+
 
     handleNumberFocus = ()=>{
         this.setState({numberFocus:true})
@@ -34,8 +58,9 @@ export default class SignUp extends React.Component{
         this.setState({numberStr:event.nativeEvent.text});
     };
 
-    handlePasswordFocus = ()=>{
-        this.setState({passwordFocus:true})
+        }
+            this.props.navigation.navigate("loggedIn");
+
     };
 
     handlePasswordBlur = ()=>{
@@ -50,10 +75,10 @@ export default class SignUp extends React.Component{
         this.setState({confirmPassFocus:false})
     };
 
+
     handlePasswordChange = (event)=>{
         this.setState({passwordStr:event.nativeEvent.text});
     };
-
     render(){
         return(
             <View style={styles.container}>
@@ -93,6 +118,7 @@ export default class SignUp extends React.Component{
                             style={styles.buttonText}>
                             Login
                         </Text>
+
                     </TouchableOpacity>
                 </View>
             </View>
