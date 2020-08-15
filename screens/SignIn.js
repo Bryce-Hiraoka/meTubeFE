@@ -16,7 +16,15 @@ export default class Signin extends React.Component{
 
     handleSubmit = () =>{
         console.log(this.state);
-        this.props.navigation.navigate("loggedIn");
+
+        fetch('https://lab5redo8-4-20.herokuapp.com/authenticateUser', {method: 'POST', headers:
+                {Accept:'application/json', 'Content-Type': 'application/json'},
+            body:JSON.stringify({number:this.state.numberStr,password:this.state.passwordStr})})
+            .then((response)=> response.json())
+            .then((responseJson)=> {
+                console.log(responseJson);
+            })
+            .catch((error)=> {console.error(error);});
     };
 
     handleSignUp = () =>{
