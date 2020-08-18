@@ -10,6 +10,7 @@ import React from 'react';
 
 import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
+import Home from "../screens/Home";
 
 export const notLoggedIn = createStackNavigator(
     {
@@ -29,6 +30,18 @@ export const notLoggedIn = createStackNavigator(
 
     }
 );
+export const loggedIn = createBottomTabNavigator(
+    {
+
+        Home:{
+            screen:Home,
+            navigationOptions: {
+                headerTitle: 'Home',
+            }
+        }
+
+    }
+);
 
 
 export default createAppContainer(
@@ -36,6 +49,9 @@ export default createAppContainer(
         {
             notLoggedIn:{
                 screen:notLoggedIn
+            },
+            loggedIn:{
+                screen:loggedIn
             }
         }
     )

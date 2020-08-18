@@ -23,8 +23,11 @@ export default class Signin extends React.Component{
             .then((response)=> response.json())
             .then((responseJson)=> {
                 console.log(responseJson);
+                this.props.navigation.navigate("Home",{userInfoJson:responseJson});
+
             })
             .catch((error)=> {console.error(error);});
+
     };
 
     handleSignUp = () =>{
