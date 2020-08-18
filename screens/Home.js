@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import styles from '../Constants/HomeStyle';
 import TouchableHighlight from "react-native-web/src/exports/TouchableHighlight";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import {Avatar} from 'react-native-paper';
+import ItemInfo from "./components/ItemInfo";
 
 export default class home extends React.Component{
     constructor (props){
@@ -9,7 +11,7 @@ export default class home extends React.Component{
         this.state = {
             numberStr: '',
             passwordStr: '',
-            PIDStr: '',
+            PIDStr:'',
             userInfoJson:this.props.navigation.getParam("userInfoJson")
         }
     }
@@ -23,8 +25,9 @@ export default class home extends React.Component{
         this.props.navigation.navigate("action2")
     };
 
-    handleDelete = () => {
-        fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'POST', headers:
+    retrieveUserData = () =>{
+
+        fetch('https://lab5redo8-4-20.herokuapp.com/authenticateUser', {method: 'GET', headers:
                 {Accept:'application/json', 'Content-Type': 'application/json'},
             body:JSON.stringify({pid:this.state.PIDStr})})
             .then((response)=> response.json())
@@ -63,6 +66,7 @@ export default class home extends React.Component{
                         </TouchableOpacity>
                     </View>
                 </View>
+
             </View>
         );
     }

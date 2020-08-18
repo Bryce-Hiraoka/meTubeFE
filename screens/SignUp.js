@@ -27,11 +27,11 @@ export default class SignUp extends React.Component{
                 fetch('https://lab5redo8-4-20.herokuapp.com/userSignup', {method: 'POST', headers:
                         {Accept:'application/json', 'Content-Type': 'application/json'},
                     body:JSON.stringify({number:this.state.numberStr,password:this.state.passwordStr})})
-                    .then((response)=> response.json())
-                    .then((responseJson)=> {
-                        console.log(responseJson);
-                        this.props.navigation.navigate("Home",{userInfoJson:responseJson});
-                    })
+                        .then((response)=> response.json())
+                        .then((responseJson)=> {
+                            console.log(responseJson);
+                            this.props.navigation.navigate("Home",{userInfoJson:responseJson});
+                        })
                     .catch((error)=> {console.error(error);});
 
             }else{
@@ -52,7 +52,6 @@ export default class SignUp extends React.Component{
 
     };
 
-
     handleNumberFocus = () =>{
         this.setState({numberFocus: true});
     };
@@ -68,7 +67,6 @@ export default class SignUp extends React.Component{
     handlePasswordBlur = () =>{
         this.setState({passwordFocus: false});
     };
-
 
     handleConfirmFocus = ()=>{
         this.setState({confirmPassFocus:true})

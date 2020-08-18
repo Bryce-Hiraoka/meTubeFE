@@ -11,10 +11,12 @@ import React from 'react';
 import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
 import Home from "../screens/Home";
+
 import AddItem from "../screens/AddItem";
 import EditItem from "../screens/EditItem";
 import Profile from "../screens/Profile";
 import Logout from "../screens/Logout";
+
 
 export const notLoggedIn = createStackNavigator(
     {
@@ -28,6 +30,18 @@ export const notLoggedIn = createStackNavigator(
             screen:SignUp,
             navigationOptions: {
                 headerTitle: 'SignUp',
+            }
+        }
+
+    }
+);
+export const loggedIn = createBottomTabNavigator(
+    {
+
+        Home:{
+            screen:Home,
+            navigationOptions: {
+                headerTitle: 'Home',
             }
         }
 
@@ -112,6 +126,7 @@ export default createAppContainer(
             },
             action2:{
                 screen:action2
+
             }
         }
     )
