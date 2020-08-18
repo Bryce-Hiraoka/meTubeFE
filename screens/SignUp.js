@@ -52,9 +52,21 @@ export default class SignUp extends React.Component{
 
     };
 
+    handleNumberFocus = () =>{
+        this.setState({numberFocus: true});
+    };
 
+    handleNumberBlur = () =>{
+        this.setState({numberFocus: false});
+    };
 
+    handlePasswordFocus = () =>{
+        this.setState({passwordFocus: true});
+    };
 
+    handlePasswordBlur = () =>{
+        this.setState({passwordFocus: false});
+    };
 
     handleConfirmFocus = ()=>{
         this.setState({confirmPassFocus:true})
@@ -76,6 +88,7 @@ export default class SignUp extends React.Component{
     handlePasswordChange = (event)=>{
         this.setState({passwordStr:event.nativeEvent.text});
     };
+
     render(){
         return(
             <View style={styles.container}>
@@ -120,6 +133,6 @@ export default class SignUp extends React.Component{
                     </TouchableOpacity>
                 </View>
             </View>
-    );
+        );
     }
 }
