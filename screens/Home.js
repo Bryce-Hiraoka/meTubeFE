@@ -1,73 +1,69 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
-import {Avatar} from 'react-native-paper';
-import styles from '../Constants/SignInStyle';
+import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import styles from '../Constants/HomeStyle';
+import TouchableHighlight from "react-native-web/src/exports/TouchableHighlight";
 
 export default class home extends React.Component{
     constructor (props){
         super(props);
         this.state = {
-            numberFocus: false,
-            passwordFocus: false,
             numberStr: '',
-            passwordStr: ''
+            passwordStr: '',
+            PIDStr: '',
+            userInfoJson:this.props.navigation.getParam("userInfoJson")
         }
     }
 
-    handleSubmit = () =>{
-        console.log(this.state);
+    handleAdd = () => {
+        this.props.navigation.navigate("actions")
+    };
 
-        fetch('https://lab5redo8-4-20.herokuapp.com/authenticateUser', {method: 'POST', headers:
+    handleEdit = () => {
+        this.props.navigation.navigate("actions")
+        this.props.navigation.navigate("action2")
+    };
+
+    handleDelete = () => {
+        fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'POST', headers:
                 {Accept:'application/json', 'Content-Type': 'application/json'},
-            body:JSON.stringify({number:this.state.numberStr,password:this.state.passwordStr})})
+            body:JSON.stringify({pid:this.state.PIDStr})})
             .then((response)=> response.json())
             .then((responseJson)=> {
                 console.log(responseJson);
+                this.props.navigation.navigate("Home",{userInfoJson:responseJson});
             })
             .catch((error)=> {console.error(error);});
-    };
-
+    }
     render(){
         return(
-            <View style={styles.container}>
-                <Avatar.Image style={styles.logo}
-                              size={200}
-                              source={require('../assets/PVlogo.jpeg')}
-                />
-                <View style={styles.box}>
-                    <TextInput
-                        style={this.state.numberFocus?styles.textInputHoverNum:styles.textInputNum}
-                        onFocus={this.handleNumberFocus}
-                        onBlur={this.handleNumberBlur}
-                        placeholderTextColor='black'
-                        placeholder="Number"
-                        onChange={this.handleNumberChange}
-                    />
-                    <TextInput
-                        style={this.state.passwordFocus?styles.textInputHoverPass:styles.textInputPass}
-                        onFocus={this.handlePasswordFocus}
-                        onBlur={this.handlePasswordBlur}
-                        placeholderTextColor='black'
-                        placeholder="Password"
-                        onChange={this.handlePasswordChange}
-                    />
-                    <TouchableOpacity
-                        onPress={this.handleSubmit}
-                        style={styles.button}
-                    >
-                        <Text
-                            style={styles.buttonText}>
-                            Login
-                        </Text>
-                    </TouchableOpacity>
-                    <View style={styles.signUp}>
-                        <Text> Don't have an account?</Text>
-                        <TouchableOpacity onPress={this.handleSignUp}>
-                            <Text style={styles.button2Text}> SignUp </Text>
+            <View style={styles.Home}>
+                <TouchableOpacity
+                    style={styles.Add}
+                    onPress={this.handleAdd}
+                >
+                    <Text style={styles.buttonText}>
+                        + Add Item
+                    </Text>
+                </TouchableOpacity>
+                <View style={styles.container}>
+                    <View>
+                        <TouchableOpacity
+                            style={styles.contButton}
+                            onClick={this.handleEdit}
+                        >
+                            <Text style={styles.buttonText}>Edit</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity
+                            style={styles.contButton}
+                            onClick={this.handleDelete}
+                        >
+                            <Text style={styles.buttonText}> Delete</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </View>
-        )
+        );
     }
-}
+};

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
 import {Avatar} from 'react-native-paper';
 import styles from '../Constants/SignInStyle';
 
@@ -14,21 +14,24 @@ export default class SignUp extends React.Component{
             confirmPassFocus:false,
 
             numberStr:'',
-            passwordStr:''
+            passwordStr:'',
+            confirmPasswordStr:''
         }
     }
 
     handleSubmit=()=>{
         try{
+            console.log(this.state.passwordStr==this.state.confirmPasswordStr);
             if(this.state.passwordStr==this.state.confirmPasswordStr){
                 console.log(this.state);
                 fetch('https://lab5redo8-4-20.herokuapp.com/userSignup', {method: 'POST', headers:
                         {Accept:'application/json', 'Content-Type': 'application/json'},
                     body:JSON.stringify({number:this.state.numberStr,password:this.state.passwordStr})})
-                        .then((response)=> response.json())
-                        .then((responseJson)=> {
-                            console.log(responseJson);
-                        })
+                    .then((response)=> response.json())
+                    .then((responseJson)=> {
+                        console.log(responseJson);
+                        this.props.navigation.navigate("Home",{userInfoJson:responseJson});
+                    })
                     .catch((error)=> {console.error(error);});
 
             }else{
@@ -44,28 +47,28 @@ export default class SignUp extends React.Component{
                 [
                     {text:'Return to Signin', onPress: () => {navigation.navigate({routeName:'notLoggedIn'})}}
                 ]
-
-
-    handleNumberFocus = ()=>{
-        this.setState({numberFocus:true})
-    };
-
-    handleNumberBlur = ()=>{
-        this.setState({numberFocus:false})
-    };
-
-    handleNumberChange = (event)=>{
-        this.setState({numberStr:event.nativeEvent.text});
-    };
-
         }
-            this.props.navigation.navigate("loggedIn");
+
 
     };
 
-    handlePasswordBlur = ()=>{
-        this.setState({passwordFocus:false})
+
+    handleNumberFocus = () =>{
+        this.setState({numberFocus: true});
     };
+
+    handleNumberBlur = () =>{
+        this.setState({numberFocus: false});
+    };
+
+    handlePasswordFocus = () =>{
+        this.setState({passwordFocus: true});
+    };
+
+    handlePasswordBlur = () =>{
+        this.setState({passwordFocus: false});
+    };
+
 
     handleConfirmFocus = ()=>{
         this.setState({confirmPassFocus:true})
@@ -76,9 +79,18 @@ export default class SignUp extends React.Component{
     };
 
 
+    handleNumberChange = (event)=>{
+        this.setState({numberStr:event.nativeEvent.text});
+    };
+
+    handleConfirmPasswordChange= (event)=>{
+        this.setState({confirmPasswordStr:event.nativeEvent.text});
+    };
+
     handlePasswordChange = (event)=>{
         this.setState({passwordStr:event.nativeEvent.text});
     };
+
     render(){
         return(
             <View style={styles.container}>
@@ -109,6 +121,7 @@ export default class SignUp extends React.Component{
                         onBlur={this.handleConfirmBlur}
                         placeholderTextColor='black'
                         placeholder="Confirm Password"
+                        onChange={this.handleConfirmPasswordChange}
                     />
                     <TouchableOpacity
                         onPress={this.handleSubmit}
@@ -122,6 +135,6 @@ export default class SignUp extends React.Component{
                     </TouchableOpacity>
                 </View>
             </View>
-    );
+        );
     }
 }
