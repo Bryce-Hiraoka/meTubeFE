@@ -53,7 +53,7 @@ export default class home extends React.Component{
                             {this.state.userInfoJson.map(item=>{
                                 if(item){
 
-                                    return <ItemInfo msg={item.itemInfo} navigation={this.props.navigation} param={{PIDStr:item.pid} update={retrie}/>
+                                    return <ItemInfo msg={item.itemInfo} navigation={this.props.navigation} param={{PIDStr:item.pid}} update={retrieve}/>
                                 }
                             })}
                         </View>
