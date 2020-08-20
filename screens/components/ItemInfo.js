@@ -4,12 +4,11 @@ import styles from "../../Constants/HomeStyle";
 
 export default class ItemInfo extends React.Component{
 
-    constructor (props){
+    constructor (props) {
         super(props);
         this.state = {
-            numberStr: '',
-            passwordStr: '',
-            PIDStr:''
+            userInfoJSON: [],
+            PIDStr: ''
         }
     }
 
@@ -32,12 +31,13 @@ export default class ItemInfo extends React.Component{
 
     handleDelete = async () => {
         console.log('ran')
-        await fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'GET', headers:
+        await fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'POST', headers:
                 {Accept:'application/json', 'Content-Type': 'application/json'},
         })
             .then((response)=> response.json())
             .then((responseJson)=> {
                 console.log(responseJson);
+                console.log(this.state.PIDStr);
 
             })
             .catch((error)=> {console.error(error);});

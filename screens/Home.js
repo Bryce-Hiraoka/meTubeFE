@@ -23,6 +23,7 @@ export default class home extends React.Component{
             .then((responseJson)=> {
                 console.log('this is the one', responseJson);
                 this.setState({userInfoJson:responseJson});
+                console.log('look', responseJson);
             })
             .catch((error)=> {console.error(error);});
     };
