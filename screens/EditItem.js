@@ -1,51 +1,47 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native';
-import styles from '../Constants/Actions';
-import TouchableHighlight from "react-native-web/src/exports/TouchableHighlight";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, SafeAreaView} from 'react-native';
+import styles from '../Constants/HomeStyle';
+import ItemInfo from "./components/ItemInfo";
+
+
+
 
 export default class EditItem extends React.Component{
     constructor (props){
         super(props);
         this.state = {
-            PIDStr: '',
-            itemStr: ''
+            pidStr: this.props.navigation.param,
+            itemInfoStr: '',
+            // userInfoJson:this.props.navigation.getParam("userInfoJson")
         }
     }
 
-    handleUIDChange = (event) => {
-        this.setState({PIDStr:event.nativeEvent.text});
+    changeUserData = async() =>{
+
+        await fetch('https://lab5redo8-4-20.herokuapp.com/change', {method: 'POST', headers:
+                {Accept:'application/json', 'Content-Type': 'application/json'},
+            body:JSON.stringify({pid:this.state.pidStr,itemInfo:this.state.itemInfoStr})})
+            .then((response)=> response.json())
+            .then((responseJson)=> {
+                console.log(responseJson);
+            })
+            .catch((error)=> {console.error(error);});
     };
 
-    handleItemInfoChange = (event) => {
-        this.setState({itemStr:event.nativeEvent.text});
-    };
 
-    handleSubmit = () => {
-        this.props.navigation.navigate("loggedIn")
-    }
 
     render(){
         return(
-            <View style={styles.main}>
-                <TextInput
-                    style={styles.textInput}
-                    placeholderTextColor='black'
-                    placeholder="Product ID"
-                    onChange={this.handleUIDChange}
-                />
-                <TextInput
-                    style={styles.textInput}
-                    placeholderTextColor='black'
-                    placeholder="Item Name"
-                    onChange={this.handleItemInfoChange}
-                />
-                <TouchableOpacity
-                    style={styles.AddButton}
-                    onPress={this.handleSubmit}
-                >
-                    <Text style={styles.ButtonColor}>Edit Item</Text>
-                </TouchableOpacity>
-            </View>
+            <ScrollView>
+                <ItemInfo msg={JSON.stringify(this.state.userInfoJson)} />
+                <ItemInfo msg="Creating Reusable React Components" />
+                {this.state.userInfoJson.map((item)=>{
+                    if(item){
+                        console.log(item.itemInfo);
+                        return <ItemInfo style={styles.container} msg={item.itemInfo} />
+                    }
+                })}
+            </ScrollView>
         )
     }
-};
+}

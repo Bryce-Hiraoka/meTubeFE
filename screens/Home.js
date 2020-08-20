@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from '../Constants/HomeStyle';
-import TouchableHighlight from "react-native-web/src/exports/TouchableHighlight";
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
-import {Avatar} from 'react-native-paper';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView} from 'react-native';
 import ItemInfo from "./components/ItemInfo";
 
 export default class home extends React.Component{
@@ -12,62 +10,55 @@ export default class home extends React.Component{
             numberStr: '',
             passwordStr: '',
             PIDStr:'',
-            userInfoJson:this.props.navigation.getParam("userInfoJson")
+            userInfoJson:[]
         }
+    }
+
+    retrieveUserData = async () =>{
+
+        await fetch('https://lab5redo8-4-20.herokuapp.com/userInterface', {method: 'GET', headers:
+                {Accept:'application/json', 'Content-Type': 'application/json'},
+        })
+            .then((response)=> response.json())
+            .then((responseJson)=> {
+                console.log('this is the one', responseJson);
+                this.setState({userInfoJson:responseJson});
+            })
+            .catch((error)=> {console.error(error);});
+    };
+
+    async componentDidMount() {
+        await this.retrieveUserData();
     }
 
     handleAdd = () => {
         this.props.navigation.navigate("actions")
     };
 
-    handleEdit = () => {
-        this.props.navigation.navigate("actions")
-        this.props.navigation.navigate("action2")
-    };
-
-    retrieveUserData = () =>{
-
-        fetch('https://lab5redo8-4-20.herokuapp.com/authenticateUser', {method: 'GET', headers:
-                {Accept:'application/json', 'Content-Type': 'application/json'},
-            body:JSON.stringify({pid:this.state.PIDStr})})
-            .then((response)=> response.json())
-            .then((responseJson)=> {
-                console.log(responseJson);
-                this.props.navigation.navigate("Home",{userInfoJson:responseJson});
-            })
-            .catch((error)=> {console.error(error);});
-    }
     render(){
         return(
-            <View style={styles.Home}>
-                <TouchableOpacity
-                    style={styles.Add}
-                    onPress={this.handleAdd}
-                >
-                    <Text style={styles.buttonText}>
-                        + Add Item
-                    </Text>
-                </TouchableOpacity>
-                <View style={styles.container}>
-                    <View>
-                        <TouchableOpacity
-                            style={styles.contButton}
-                            onClick={this.handleEdit}
-                        >
-                            <Text style={styles.buttonText}>Edit</Text>
-                        </TouchableOpacity>
+                <View style={styles.Home}>
+                    <View style={styles.title}>
+                        <Text style={styles.titleText}> Home </Text>
                     </View>
-                    <View>
-                        <TouchableOpacity
-                            style={styles.contButton}
-                            onClick={this.handleDelete}
-                        >
-                            <Text style={styles.buttonText}> Delete</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity
+                        style={styles.Add}
+                        onPress={this.handleAdd}
+                    >
+                        <Text style={styles.buttonText}>
+                            + Add Item
+                        </Text>
+                    </TouchableOpacity>
+                    <ScrollView>
+                        <View>
+                            {this.state.userInfoJson.map((item)=>{
+                                if(item){
+                                    return <ItemInfo msg={item.itemInfo} navigation={this.props.navigation}/>
+                                }
+                            })}
+                        </View>
+                    </ScrollView>
                 </View>
-
-            </View>
         );
     }
 };

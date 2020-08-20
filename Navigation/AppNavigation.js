@@ -16,6 +16,7 @@ import AddItem from "../screens/AddItem";
 import EditItem from "../screens/EditItem";
 import Profile from "../screens/Profile";
 import Logout from "../screens/Logout";
+import ItemInfo from "../screens/components/ItemInfo";
 
 
 export const notLoggedIn = createStackNavigator(
@@ -35,25 +36,12 @@ export const notLoggedIn = createStackNavigator(
 
     }
 );
-export const loggedIn = createBottomTabNavigator(
-    {
-
-        Home:{
-            screen:Home,
-            navigationOptions: {
-                headerTitle: 'Home',
-            }
-        }
-
-    }
-);
 
 export const loggedIn = createBottomTabNavigator(
     {
         Home:{
             screen: Home,
             navigationOptions: {
-                headerTitle: 'Home',
                 tabBarLabel: 'Home',
                 tabBarIcon:({tintColor}) =>(
                     <FontAwesome name="home" size={30} color={tintColor} />
@@ -62,7 +50,7 @@ export const loggedIn = createBottomTabNavigator(
         },
         Profile:{
             screen: Profile,
-            navigationOptions:{
+            navigationOptions: {
                 tabBarLabel: 'Profile',
                 tabBarIcon:({tintColor}) =>(
                     <FontAwesome name="user" size={30} color={tintColor} />
