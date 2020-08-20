@@ -9,12 +9,11 @@ export default class ItemInfo extends React.Component{
         this.state = {
             numberStr: '',
             passwordStr: '',
-            PIDStr:''
+            PIDStr:this.props.param.PIDStr
         }
     }
 
     retrieveUserData = async () =>{
-
         await fetch('https://lab5redo8-4-20.herokuapp.com/userInterface', {method: 'GET', headers:
                 {Accept:'application/json', 'Content-Type': 'application/json'},
         })
@@ -31,16 +30,29 @@ export default class ItemInfo extends React.Component{
     }
 
     handleDelete = async () => {
-        console.log('ran')
-        await fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'GET', headers:
-                {Accept:'application/json', 'Content-Type': 'application/json'},
-        })
-            .then((response)=> response.json())
-            .then((responseJson)=> {
-                console.log(responseJson);
+        console.log(this.state.PIDStr,'ran')
 
+
+        await fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'POST', headers:
+                {Accept:'application/json', 'Content-Type': 'application/json'},
+            body:JSON.stringify({pid:this.state.PIDStr})})
+            .then((response)=> response.json())
+            .then(async (responseJson)=> {
+                console.log(this.state.PIDStr,'ran');
+                await fetch('https://lab5redo8-4-20.herokuapp.com/userInterface', {method: 'GET', headers:
+                        {Accept:'application/json', 'Content-Type': 'application/json'},
+                })
+                    .then((response)=> response.json())
+                    .then((responseJson)=> {
+                        this.setState({userInfoJson:responseJson});
+                    })
+                    .catch((error)=> {console.error(error);});
             })
             .catch((error)=> {console.error(error);});
+
+
+
+
     };
 
     handleEdit = () => {

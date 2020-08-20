@@ -21,7 +21,6 @@ export default class home extends React.Component{
         })
             .then((response)=> response.json())
             .then((responseJson)=> {
-                console.log('this is the one', responseJson);
                 this.setState({userInfoJson:responseJson});
             })
             .catch((error)=> {console.error(error);});
@@ -51,9 +50,10 @@ export default class home extends React.Component{
                     </TouchableOpacity>
                     <ScrollView>
                         <View>
-                            {this.state.userInfoJson.map((item)=>{
+                            {this.state.userInfoJson.map(item=>{
                                 if(item){
-                                    return <ItemInfo msg={item.itemInfo} navigation={this.props.navigation}/>
+
+                                    return <ItemInfo msg={item.itemInfo} navigation={this.props.navigation} param={{PIDStr:item.pid} update={retrie}/>
                                 }
                             })}
                         </View>
