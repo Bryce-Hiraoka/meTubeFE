@@ -16,6 +16,10 @@ export default class EditItem extends React.Component{
         }
     }
 
+    handelItemInfoChange= ()=>{
+        this.setState({itemInfoStr:event.nativeEvent.text});
+    }
+
     changeUserData = async() =>{
 
         await fetch('https://lab5redo8-4-20.herokuapp.com/change', {method: 'POST', headers:
@@ -33,15 +37,25 @@ export default class EditItem extends React.Component{
     render(){
         return(
             <ScrollView>
-                <ItemInfo msg={JSON.stringify(this.state.userInfoJson)} />
-                <ItemInfo msg="Creating Reusable React Components" />
+                <TextInput
+                    onChange={this.handelItemInfoChange()}
+                />
                 {this.state.userInfoJson.map((item)=>{
                     if(item){
                         console.log(item.itemInfo);
                         return <ItemInfo style={styles.container} msg={item.itemInfo} />
                     }
                 })}
+
+                <TouchableOpacity
+                    onPress={this.changeUserData()}
+                >
+                    <Text>
+                        EditItem
+                    </Text>
+                </TouchableOpacity>
             </ScrollView>
         )
     }
 }
+
