@@ -18,8 +18,11 @@ export default class ItemInfo extends React.Component{
         })
             .then((response)=> response.json())
             .then((responseJson)=> {
-                console.log(responseJson);
-                this.setState({userInfoJson:responseJson});
+                this.props.param.userInfoJson = responseJson;
+                this.props.changeState(responseJson);
+                console.log("item info after deletion length ", this.props.param.userInfoJson.length);
+                console.log("response info after deletion length ", responseJson.length);
+
             })
             .catch((error)=> {console.error(error);});
     };
@@ -28,6 +31,22 @@ export default class ItemInfo extends React.Component{
         await this.retrieveUserData();
     }
 
+    handleDelete = async () => {
+
+
+        await fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'POST', headers:
+                {Accept:'application/json', 'Content-Type': 'application/json'},
+            body:JSON.stringify({pid:this.state.PIDStr})})
+            .then((response)=> response.json())
+            .then(async (responseJson)=> {
+                this.retrieveUserData();
+            })
+            .catch((error)=> {console.error(error);});
+
+
+
+
+    };
     handleEdit = () => {
         console.log('working', this.state.PIDStr)
         this.props.navigation.navigate("EditItem", { PIDStr: this.state.PIDStr });
@@ -36,6 +55,7 @@ export default class ItemInfo extends React.Component{
 
 
     render(){
+
         return(
             <View style={styles.container}>
                 <View style={styles.itemCont}>
