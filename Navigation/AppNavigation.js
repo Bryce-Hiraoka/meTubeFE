@@ -16,6 +16,7 @@ import AddItem from "../screens/AddItem";
 import EditItem from "../screens/EditItem";
 import Profile from "../screens/Profile";
 import Logout from "../screens/Logout";
+import Delete from "../screens/Delete"
 import ItemInfo from "../screens/components/ItemInfo";
 
 
@@ -90,15 +91,14 @@ export const actions = createStackNavigator(
 
 export const action2 = createStackNavigator(
     {
-        EditItem:{
+        EditItem: {
             screen: EditItem,
-            navigationOptions:{
+            navigationOptions: {
                 headerTitle: 'Edit Item'
             }
         }
     }
-);
-
+    );
 
 export default createAppContainer(
     createSwitchNavigator(
@@ -116,6 +116,6 @@ export default createAppContainer(
                 screen:action2
 
             }
-        }
+}
     )
 );

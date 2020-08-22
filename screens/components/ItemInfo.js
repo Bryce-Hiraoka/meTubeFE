@@ -1,15 +1,14 @@
 import {Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import styles from "../../Constants/HomeStyle";
+import EditItem from "../EditItem";
 
 export default class ItemInfo extends React.Component{
 
     constructor (props){
         super(props);
         this.state = {
-            numberStr: '',
-            passwordStr: '',
-            PIDStr:this.props.PIDStr
+            PIDStr:this.props.param.PIDStr
         }
     }
 
@@ -48,10 +47,10 @@ export default class ItemInfo extends React.Component{
 
 
     };
-
     handleEdit = () => {
-        console.log('working')
-        this.props.navigation.navigate("action2")
+        console.log('working', this.state.PIDStr)
+        this.props.navigation.navigate("EditItem", { PIDStr: this.state.PIDStr });
+
     };
 
 
