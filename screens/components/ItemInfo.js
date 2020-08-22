@@ -1,14 +1,13 @@
 import {Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import styles from "../../Constants/HomeStyle";
+import EditItem from "../EditItem";
 
 export default class ItemInfo extends React.Component{
 
     constructor (props){
         super(props);
         this.state = {
-            numberStr: '',
-            passwordStr: '',
             PIDStr:this.props.param.PIDStr
         }
     }
@@ -29,35 +28,10 @@ export default class ItemInfo extends React.Component{
         await this.retrieveUserData();
     }
 
-    handleDelete = async () => {
-        console.log(this.state.PIDStr,'ran')
-
-
-        await fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'POST', headers:
-                {Accept:'application/json', 'Content-Type': 'application/json'},
-            body:JSON.stringify({pid:this.state.PIDStr})})
-            .then((response)=> response.json())
-            .then(async (responseJson)=> {
-                console.log(this.state.PIDStr,'ran');
-                await fetch('https://lab5redo8-4-20.herokuapp.com/userInterface', {method: 'GET', headers:
-                        {Accept:'application/json', 'Content-Type': 'application/json'},
-                })
-                    .then((response)=> response.json())
-                    .then((responseJson)=> {
-                        this.setState({userInfoJson:responseJson});
-                    })
-                    .catch((error)=> {console.error(error);});
-            })
-            .catch((error)=> {console.error(error);});
-
-
-
-
-    };
-
     handleEdit = () => {
-        console.log('working')
-        this.props.navigation.navigate("action2")
+        console.log('working', this.state.PIDStr)
+        this.props.navigation.navigate("EditItem", { PIDStr: this.state.PIDStr });
+
     };
 
 

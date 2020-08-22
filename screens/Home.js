@@ -2,6 +2,8 @@ import React from 'react';
 import styles from '../Constants/HomeStyle';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView} from 'react-native';
 import ItemInfo from "./components/ItemInfo";
+import EditItem from "./EditItem";
+import {EdgeInsetsPropType} from "react-native-web";
 
 export default class home extends React.Component{
     constructor (props){
@@ -52,8 +54,7 @@ export default class home extends React.Component{
                         <View>
                             {this.state.userInfoJson.map(item=>{
                                 if(item){
-
-                                    return <ItemInfo msg={item.itemInfo} navigation={this.props.navigation} param={{PIDStr:item.pid}} update={retrieve}/>
+                                    return <ItemInfo msg={item.itemInfo} navigation={this.props.navigation} param={{PIDStr:item.pid}} />
                                 }
                             })}
                         </View>
