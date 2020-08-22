@@ -13,15 +13,16 @@ export default class AddItem extends React.Component{
 
     handleItemInfoChange = (event) => {
         this.setState({itemStr:event.nativeEvent.text});
+        console.log(this.state.itemStr)
     };
 
     handleSubmit = () => {
         fetch('https://lab5redo8-4-20.herokuapp.com/create_order', {method: 'POST', headers:
                 {Accept:'application/json', 'Content-Type': 'application/json'},
-            body:JSON.stringify({itemInfo:this.state.itemStr})})
+            body: JSON.stringify({itemInfo:this.state.itemStr})})
             .then((response)=> response.json())
             .then((responseJson)=> {
-                console.log(responseJson);
+                console.log(responseJson)
 
                 this.props.navigation.navigate("Home",{userInfoJson:responseJson});
             })

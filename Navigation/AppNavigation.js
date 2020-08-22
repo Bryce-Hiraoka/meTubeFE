@@ -90,15 +90,14 @@ export const actions = createStackNavigator(
 
 export const action2 = createStackNavigator(
     {
-        EditItem:{
+        EditItem: {
             screen: EditItem,
-            navigationOptions:{
+            navigationOptions: {
                 headerTitle: 'Edit Item'
             }
         }
     }
-);
-
+    );
 
 export default createAppContainer(
     createSwitchNavigator(
@@ -116,6 +115,6 @@ export default createAppContainer(
                 screen:action2
 
             }
-        }
+}
     )
 );
