@@ -9,19 +9,21 @@ export default class ItemInfo extends React.Component{
         this.state = {
             numberStr: '',
             passwordStr: '',
-            PIDStr:''
+            PIDStr:this.props.PIDStr
         }
     }
 
     retrieveUserData = async () =>{
-
         await fetch('https://lab5redo8-4-20.herokuapp.com/userInterface', {method: 'GET', headers:
                 {Accept:'application/json', 'Content-Type': 'application/json'},
         })
             .then((response)=> response.json())
             .then((responseJson)=> {
-                console.log(responseJson);
-                this.setState({userInfoJson:responseJson});
+                this.props.param.userInfoJson = responseJson;
+                this.props.changeState(responseJson);
+                console.log("item info after deletion length ", this.props.param.userInfoJson.length);
+                console.log("response info after deletion length ", responseJson.length);
+
             })
             .catch((error)=> {console.error(error);});
     };
@@ -31,16 +33,20 @@ export default class ItemInfo extends React.Component{
     }
 
     handleDelete = async () => {
-        console.log('ran')
-        await fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'GET', headers:
-                {Accept:'application/json', 'Content-Type': 'application/json'},
-        })
-            .then((response)=> response.json())
-            .then((responseJson)=> {
-                console.log(responseJson);
 
+
+        await fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'POST', headers:
+                {Accept:'application/json', 'Content-Type': 'application/json'},
+            body:JSON.stringify({pid:this.state.PIDStr})})
+            .then((response)=> response.json())
+            .then(async (responseJson)=> {
+                this.retrieveUserData();
             })
             .catch((error)=> {console.error(error);});
+
+
+
+
     };
 
     handleEdit = () => {
@@ -50,6 +56,7 @@ export default class ItemInfo extends React.Component{
 
 
     render(){
+
         return(
             <View style={styles.container}>
                 <View style={styles.itemCont}>

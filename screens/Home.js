@@ -14,6 +14,10 @@ export default class home extends React.Component{
         }
     }
 
+    setUserInfoJson = async (userInfo) =>{
+        this.setState({userInfoJson: userInfo});
+    };
+
     retrieveUserData = async () =>{
 
         await fetch('https://lab5redo8-4-20.herokuapp.com/userInterface', {method: 'GET', headers:
@@ -21,7 +25,6 @@ export default class home extends React.Component{
         })
             .then((response)=> response.json())
             .then((responseJson)=> {
-                console.log('this is the one', responseJson);
                 this.setState({userInfoJson:responseJson});
             })
             .catch((error)=> {console.error(error);});
@@ -36,6 +39,7 @@ export default class home extends React.Component{
     };
 
     render(){
+        console.log("home page array length", this.state.userInfoJson.length);
         return(
                 <View style={styles.Home}>
                     <View style={styles.title}>
@@ -51,9 +55,9 @@ export default class home extends React.Component{
                     </TouchableOpacity>
                     <ScrollView>
                         <View>
-                            {this.state.userInfoJson.map((item)=>{
+                            {this.state.userInfoJson.map(item=>{
                                 if(item){
-                                    return <ItemInfo msg={item.itemInfo} navigation={this.props.navigation}/>
+                                    return <ItemInfo  msg={item.itemInfo} navigation={this.props.navigation} PIDStr={item.pid} param={this.state} changeState={this.setUserInfoJson}/>
                                 }
                             })}
                         </View>
