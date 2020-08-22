@@ -9,7 +9,7 @@ export default class ItemInfo extends React.Component{
         this.state = {
             numberStr: '',
             passwordStr: '',
-            PIDStr:this.props.param.PIDStr
+            PIDStr:this.props.PIDStr
         }
     }
 
@@ -19,8 +19,11 @@ export default class ItemInfo extends React.Component{
         })
             .then((response)=> response.json())
             .then((responseJson)=> {
-                console.log(responseJson);
-                this.setState({userInfoJson:responseJson});
+                this.props.param.userInfoJson = responseJson;
+                this.props.changeState(responseJson);
+                console.log("item info after deletion length ", this.props.param.userInfoJson.length);
+                console.log("response info after deletion length ", responseJson.length);
+
             })
             .catch((error)=> {console.error(error);});
     };
@@ -30,7 +33,6 @@ export default class ItemInfo extends React.Component{
     }
 
     handleDelete = async () => {
-        console.log(this.state.PIDStr,'ran')
 
 
         await fetch('https://lab5redo8-4-20.herokuapp.com/delete', {method: 'POST', headers:
@@ -38,15 +40,7 @@ export default class ItemInfo extends React.Component{
             body:JSON.stringify({pid:this.state.PIDStr})})
             .then((response)=> response.json())
             .then(async (responseJson)=> {
-                console.log(this.state.PIDStr,'ran');
-                await fetch('https://lab5redo8-4-20.herokuapp.com/userInterface', {method: 'GET', headers:
-                        {Accept:'application/json', 'Content-Type': 'application/json'},
-                })
-                    .then((response)=> response.json())
-                    .then((responseJson)=> {
-                        this.setState({userInfoJson:responseJson});
-                    })
-                    .catch((error)=> {console.error(error);});
+                this.retrieveUserData();
             })
             .catch((error)=> {console.error(error);});
 
@@ -62,6 +56,7 @@ export default class ItemInfo extends React.Component{
 
 
     render(){
+
         return(
             <View style={styles.container}>
                 <View style={styles.itemCont}>
